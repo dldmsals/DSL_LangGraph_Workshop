@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# ── 발표자 전용 ──────────────────────────────────────────
+# public 레포라 참가자가 clone 하면 바로 읽힙니다.
+# 세션이 끝난 뒤 공개하려면 아래 세 줄을 지우고 다시 커밋하세요.
+script.html
+excalidraw/MASTER_발표자용.excalidraw
+excalidraw/D7_완성본.excalidraw

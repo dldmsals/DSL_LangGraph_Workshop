@@ -1,0 +1,14 @@
+[project]
+name = "langgraph-workshop"
+version = "0.1.0"
+description = "DSL 2026 Fall - LangGraph 뉴스 다이제스트 실습"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "langgraph>=1.2.11",
+    "langchain>=1.3.18",
+    "langchain-google-genai>=4.3.7",
+    "feedparser>=6.0.14",
+    "python-dotenv>=1.0.1",
+    "grandalf>=0.8",
+    "requests>=2.32.3",
+]
