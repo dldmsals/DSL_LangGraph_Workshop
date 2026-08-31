@@ -6,6 +6,30 @@ DSL 2026 Fall 정규세션 · n8n 세션에 이어지는 LangGraph 파트
 
 ## 초기 세팅
 
+### 0. uv 설치 (처음이라면)
+
+파이썬 버전과 패키지를 알아서 맞춰주는 도구입니다. 이미 있으면 건너뛰세요.
+
+```bash
+uv --version          # 버전이 나오면 설치되어 있는 것
+```
+
+없다면 — **macOS / Linux**
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Windows** (PowerShell)
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+설치 후 터미널을 새로 열어야 인식됩니다.
+
+### 1. 레포 받고 설치
+
 ```bash
 git clone https://github.com/dldmsals/DSL_LangGraph_Workshop.git
 cd DSL_LangGraph_Workshop
@@ -15,7 +39,10 @@ uv run python -m digest.doctor
 
 `🎉 All good` 이 나오면 준비 완료입니다.
 
-### API 키 발급 (필수)
+> 명령 앞의 **`uv run` 을 빼먹지 마세요.** 그냥 `python` 으로 돌리면
+> 시스템에 깔린 다른 파이썬이 잡혀서 버전 오류가 납니다.
+
+### 2. API 키 발급 (필수)
 
 **세션 전에 반드시 발급받아 오세요.** 무료이고 카드 등록도 필요 없습니다.
 
@@ -23,7 +50,7 @@ uv run python -m digest.doctor
 2. 키를 담을 `.env` 파일을 만듭니다
 
    ```bash
-   cp .env.example .env
+   cp .env.example .env          # Windows cmd 라면:  copy .env.example .env
    ```
 
 3. 방금 만든 `.env` 를 편집기로 열어 발급받은 키를 붙여넣습니다
@@ -44,6 +71,20 @@ uv run python -m digest.doctor
 **정말 발급이 안 될 때만** 모든 명령 뒤에 `--fake-llm` 을 붙이세요.
 가짜 LLM 이 대신 답하고 노드 코드는 그대로라 흐름은 따라올 수 있지만,
 실제 모델이 매번 다르게 채점하는 걸 못 보게 됩니다.
+
+---
+
+## doctor 가 실패할 때
+
+| 메시지 | 원인 · 해결 |
+|---|---|
+| `uv: command not found` | uv 미설치. 위 **0. uv 설치** 참고 |
+| `파이썬 3.14 — 3.12 또는 3.13 이 필요합니다` | `uv run` 을 빼먹었습니다. `uv run python -m digest.doctor` 로 실행하세요 |
+| `langgraph — 'uv sync' 를 실행하세요` | `uv sync` 를 안 했거나 레포 폴더 밖에서 실행했습니다 |
+| `GOOGLE_API_KEY 없음` | `.env` 파일이 없습니다. 파일명이 `.env.txt` 로 저장되지 않았는지 확인하세요 |
+| `키가 잘못됐습니다` | 키를 복사할 때 앞뒤 공백이나 따옴표가 딸려 들어갔습니다 |
+| `호출 한도입니다` | 1분 기다렸다 다시 실행하세요 |
+| 그 외 연결 오류 | 학교·사내망 차단일 수 있습니다. 다른 네트워크에서 시도해 보세요 |
 
 ---
 

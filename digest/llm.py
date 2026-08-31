@@ -4,9 +4,16 @@ LLM 준비 담당.
 --fake-llm 을 쓰면 API 키 없이도 똑같은 그래프가 돌아갑니다.
 중요한 점: nodes.py 코드는 진짜/가짜 어느 쪽이든 한 글자도 바뀌지 않습니다.
 """
+import logging
 import os
+import warnings
 
 from pydantic import BaseModel, Field
+
+# SDK 가 뿜는 안내성 경고를 끕니다. 실습 화면이 지저분해지기만 합니다.
+logging.getLogger("google_genai").setLevel(logging.ERROR)
+logging.getLogger("google_genai.models").setLevel(logging.ERROR)
+warnings.filterwarnings("ignore", module="langchain_google_genai")
 
 
 # ── 채점 결과의 '모양' ────────────────────────────────────
