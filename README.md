@@ -4,19 +4,40 @@ DSL 2026 Fall 정규세션 · n8n 세션에 이어지는 LangGraph 파트
 
 ---
 
-## 사전 과제 (세션 전날까지)
+## 초기 세팅
 
 ```bash
-git clone <레포주소> && cd langgraph-workshop
+git clone https://github.com/dldmsals/DSL_LangGraph_Workshop.git
+cd DSL_LangGraph_Workshop
 uv sync
 uv run python -m digest.doctor
 ```
 
 `🎉 All good` 이 나오면 준비 완료입니다.
 
-**API 키** (선택): [aistudio.google.com/apikey](https://aistudio.google.com/apikey) 에서 무료 발급
-(카드 등록 불필요). `.env.example` 을 `.env` 로 복사해 붙여넣으세요.
-키가 없어도 `--fake-llm` 으로 실습 전 과정을 따라올 수 있습니다.
+### API 키 (선택)
+
+키가 없어도 `--fake-llm` 을 붙이면 실습 전 과정을 따라올 수 있습니다.
+진짜 LLM 을 쓰고 싶다면:
+
+1. [aistudio.google.com/apikey](https://aistudio.google.com/apikey) 에서 발급 (무료, 카드 등록 불필요)
+2. 키를 담을 `.env` 파일을 만듭니다
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. 방금 만든 `.env` 를 편집기로 열어 발급받은 키를 붙여넣습니다
+
+   ```
+   GOOGLE_API_KEY=AIza... 여기에 본인 키
+   ```
+
+`.env` 는 비밀값을 담는 파일이라 `.gitignore` 에 걸려 있어 깃에 올라가지 않습니다.
+레포에는 빈 양식인 `.env.example` 만 들어 있고, 각자 복사해서 자기 키를 채워 쓰는 방식입니다.
+
+> 한도는 **키가 아니라 계정 단위**입니다. 키를 여럿이 돌려 쓰면 바로 막히니
+> 각자 발급하거나, 조에서 한 명만 실제 호출하고 나머지는 `--fake-llm` 을 쓰세요.
 
 ---
 
