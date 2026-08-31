@@ -39,13 +39,9 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 git clone https://github.com/dldmsals/DSL_LangGraph_Workshop.git
 cd DSL_LangGraph_Workshop
 uv sync
-uv run python -m digest.doctor
 ```
 
-`🎉 All good` 이 나오면 준비 완료입니다.
-
-> 명령 앞의 **`uv run` 을 빼먹지 마세요.** 그냥 `python` 으로 돌리면
-> 시스템에 깔린 다른 파이썬이 잡혀서 버전 오류가 납니다.
+설치는 여기까지입니다. 준비 확인(doctor)은 다음 단계에서 API 키까지 넣은 뒤에 돌립니다.
 
 ### 2. API 키 발급 (필수)
 
@@ -69,6 +65,11 @@ uv run python -m digest.doctor
    ```bash
    uv run python -m digest.doctor
    ```
+
+   `🎉 All good` 이 나오면 준비 완료입니다.
+
+> 명령 앞의 **`uv run` 을 빼먹지 마세요.** 그냥 `python` 으로 돌리면
+> 시스템에 깔린 다른 파이썬이 잡혀서 버전 오류가 납니다.
 
 `.env` 는 비밀값을 담는 파일이라 `.gitignore` 에 걸려 있어 깃에 올라가지 않습니다.
 레포에는 빈 양식인 `.env.example` 만 들어 있고, 각자 복사해서 자기 키를 채워 쓰는 방식입니다.
