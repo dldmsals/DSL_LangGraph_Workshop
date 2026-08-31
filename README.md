@@ -15,12 +15,11 @@ uv run python -m digest.doctor
 
 `🎉 All good` 이 나오면 준비 완료입니다.
 
-### API 키 (선택)
+### API 키 발급 (필수)
 
-키가 없어도 `--fake-llm` 을 붙이면 실습 전 과정을 따라올 수 있습니다.
-진짜 LLM 을 쓰고 싶다면:
+**세션 전에 반드시 발급받아 오세요.** 무료이고 카드 등록도 필요 없습니다.
 
-1. [aistudio.google.com/apikey](https://aistudio.google.com/apikey) 에서 발급 (무료, 카드 등록 불필요)
+1. [aistudio.google.com/apikey](https://aistudio.google.com/apikey) 접속 → `Create API key`
 2. 키를 담을 `.env` 파일을 만듭니다
 
    ```bash
@@ -33,11 +32,18 @@ uv run python -m digest.doctor
    GOOGLE_API_KEY=AIza... 여기에 본인 키
    ```
 
+4. 제대로 됐는지 확인합니다
+
+   ```bash
+   uv run python -m digest.doctor
+   ```
+
 `.env` 는 비밀값을 담는 파일이라 `.gitignore` 에 걸려 있어 깃에 올라가지 않습니다.
 레포에는 빈 양식인 `.env.example` 만 들어 있고, 각자 복사해서 자기 키를 채워 쓰는 방식입니다.
 
-> 한도는 **키가 아니라 계정 단위**입니다. 키를 여럿이 돌려 쓰면 바로 막히니
-> 각자 발급하거나, 조에서 한 명만 실제 호출하고 나머지는 `--fake-llm` 을 쓰세요.
+**정말 발급이 안 될 때만** 모든 명령 뒤에 `--fake-llm` 을 붙이세요.
+가짜 LLM 이 대신 답하고 노드 코드는 그대로라 흐름은 따라올 수 있지만,
+실제 모델이 매번 다르게 채점하는 걸 못 보게 됩니다.
 
 ---
 

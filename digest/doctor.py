@@ -47,11 +47,31 @@ def main():
         print(f"{NG} 그래프 조립 — {e}")
         fails.append("graph")
 
-    if os.getenv("GOOGLE_API_KEY"):
-        print(f"{OK} GOOGLE_API_KEY 설정됨")
+    if not os.getenv("GOOGLE_API_KEY"):
+        print(f"{NG} GOOGLE_API_KEY 없음")
+        print("    1) https://aistudio.google.com/apikey 에서 발급 (무료)")
+        print("    2) cp .env.example .env")
+        print("    3) .env 를 열어 키를 붙여넣기")
+        fails.append("api key")
     else:
-        print("⚠️  GOOGLE_API_KEY 없음 — --fake-llm 으로는 실습 가능합니다")
-        print("    https://aistudio.google.com/apikey (무료, 카드 등록 불필요)")
+        try:
+            import warnings
+
+            warnings.filterwarnings("ignore")
+            from digest.llm import get_llm
+
+            get_llm().invoke("ok")
+            print(f"{OK} GOOGLE_API_KEY — 실제 호출 성공")
+        except Exception as e:
+            msg = str(e)
+            print(f"{NG} GOOGLE_API_KEY 는 있지만 호출이 안 됩니다")
+            if "API_KEY_INVALID" in msg or "API key not valid" in msg:
+                print("    키가 잘못됐습니다. .env 의 값을 다시 확인하세요.")
+            elif "RESOURCE_EXHAUSTED" in msg or "429" in msg:
+                print("    호출 한도입니다. 1분 뒤 다시 실행해 보세요.")
+            else:
+                print(f"    {type(e).__name__}: {msg[:120]}")
+            fails.append("api call")
 
     print()
     if fails:
