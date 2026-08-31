@@ -69,12 +69,18 @@ uv sync
 
 ### 3. Slack 웹훅 주소 발급 (필수)
 
-완성된 다이제스트를 터미널이 아니라 **Slack 채널로 발송**하기 위한 주소입니다.
+완성된 다이제스트를 터미널이 아니라 **본인 Slack DM 으로 발송**하기 위한 주소입니다.
 
-1. [api.slack.com/apps](https://api.slack.com/apps) 접속 → `Create New App` → `From scratch`
-2. 앱 이름(아무거나)과 워크스페이스를 고르고 `Create App`
+1. [api.slack.com/apps](https://api.slack.com/apps) 접속 → `Create an App` → **`Blank app`** 선택 → `Continue`
+   (화면이 예전 버전이면 `From scratch` 를 고르면 됩니다. `AI agent` 등 템플릿은 필요 없습니다)
+2. 앱 이름(아무거나)과 워크스페이스(**DSL**)를 고르고 생성
 3. 왼쪽 메뉴 `Incoming Webhooks` → 스위치를 `On` → 맨 아래 `Add New Webhook to Workspace`
-4. 다이제스트를 받을 채널을 고르면 `https://hooks.slack.com/services/...` 주소가 생깁니다
+4. 목적지 드롭다운에서 **본인 이름(DM)** 을 고르면 `https://hooks.slack.com/services/...` 주소가 생깁니다
+   — 다이제스트가 각자 자기 DM 으로 옵니다. 채널을 고르지 마세요
+
+   > 드롭다운에 본인 이름이 없다면: Slack 에서 **나와의 DM** 을 한 번 열어
+   > 아무 메시지나 보낸 뒤 이 페이지를 새로고침하세요. 그래도 없으면
+   > **Slackbot** 을 골라도 됩니다 — 마찬가지로 본인에게만 옵니다
 5. `.env` 를 열어 `SLACK_WEBHOOK_URL` 줄의 주석(`#`)을 지우고 본인 주소를 붙여넣습니다
 
    ```
