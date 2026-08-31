@@ -152,17 +152,23 @@ def route_after_grade(state: DigestState) -> str:
 놓여 있습니다. `점수 매기기` · `다시 쓰기` · `횟수 +1` 은 캔버스 아래
 **부품 보관소**에 있고, 미션마다 직접 끌어올려 씁니다.
 
-## 처음 LangGraph 를 배우는 발표자용
+## 복습용 — 개념만 뽑은 최소 예제
 
-`learn/` 폴더에 개념만 뽑은 최소 예제가 순서대로 있습니다.
-1~3 은 API 키도 네트워크도 필요 없습니다.
+`learn/` 폴더에는 RSS·웹훅 같은 걸 다 걷어내고 **LangGraph 개념만 남긴** 짧은 파일이
+순서대로 들어 있습니다. 실습 전 예습이나 실습 후 복습에 쓰세요.
+
+**1~3 은 API 키도 네트워크도 필요 없습니다.** 바로 돌아갑니다.
 
 ```bash
-uv run python learn/01_hello.py        # State · Node · Edge
-uv run python learn/02_conditional.py  # 조건부 엣지 (분기)
-uv run python learn/03_loop.py         # 루프 (사이클)  ★ 핵심
-uv run python learn/04_llm.py          # 진짜 LLM 붙이기 (키 필요)
+uv run python learn/01_hello.py        # State · Node · Edge  (8줄짜리 최소 그래프)
+uv run python learn/02_conditional.py  # 조건부 엣지 — 갈라지는 선
+uv run python learn/03_loop.py         # 루프 — 뒤로 가는 선   ★ 이 실습의 핵심
+uv run python learn/04_llm.py          # 03 에 진짜 LLM 만 붙인 것 (키 필요)
 ```
+
+`03` 과 `04` 를 나란히 열어보세요. **그래프 구조가 글자 하나까지 똑같습니다.**
+바뀐 건 노드 함수의 속뿐이에요. 흐름(그래프)과 내용(노드)이 분리된다는 게
+LangGraph 의 요점입니다.
 
 ---
 
