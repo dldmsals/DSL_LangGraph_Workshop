@@ -41,7 +41,7 @@ cd DSL_LangGraph_Workshop
 uv sync
 ```
 
-설치는 여기까지입니다. 준비 확인(doctor)은 다음 단계에서 API 키까지 넣은 뒤에 돌립니다.
+설치는 여기까지입니다. 준비 확인(doctor)은 아래에서 API 키와 Slack 웹훅까지 넣은 뒤에 돌립니다.
 
 ### 2. API 키 발급 (필수)
 
@@ -60,7 +60,28 @@ uv sync
    GOOGLE_API_KEY=AIza... 여기에 본인 키
    ```
 
-4. 제대로 됐는지 확인합니다
+`.env` 는 비밀값을 담는 파일이라 `.gitignore` 에 걸려 있어 깃에 올라가지 않습니다.
+레포에는 빈 양식인 `.env.example` 만 들어 있고, 각자 복사해서 자기 키를 채워 쓰는 방식입니다.
+
+**정말 발급이 안 될 때만** 모든 명령 뒤에 `--fake-llm` 을 붙이세요.
+가짜 LLM 이 대신 답하고 노드 코드는 그대로라 흐름은 따라올 수 있지만,
+실제 모델이 매번 다르게 채점하는 걸 못 보게 됩니다.
+
+### 3. Slack 웹훅 주소 발급 (필수)
+
+완성된 다이제스트를 터미널이 아니라 **Slack 채널로 발송**하기 위한 주소입니다.
+
+1. [api.slack.com/apps](https://api.slack.com/apps) 접속 → `Create New App` → `From scratch`
+2. 앱 이름(아무거나)과 워크스페이스를 고르고 `Create App`
+3. 왼쪽 메뉴 `Incoming Webhooks` → 스위치를 `On` → 맨 아래 `Add New Webhook to Workspace`
+4. 다이제스트를 받을 채널을 고르면 `https://hooks.slack.com/services/...` 주소가 생깁니다
+5. `.env` 를 열어 `SLACK_WEBHOOK_URL` 줄의 주석(`#`)을 지우고 본인 주소를 붙여넣습니다
+
+   ```
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/... 여기에 본인 주소
+   ```
+
+6. 마지막으로 전체 점검합니다
 
    ```bash
    uv run python -m digest.doctor
@@ -70,13 +91,6 @@ uv sync
 
 > 명령 앞의 **`uv run` 을 빼먹지 마세요.** 그냥 `python` 으로 돌리면
 > 시스템에 깔린 다른 파이썬이 잡혀서 버전 오류가 납니다.
-
-`.env` 는 비밀값을 담는 파일이라 `.gitignore` 에 걸려 있어 깃에 올라가지 않습니다.
-레포에는 빈 양식인 `.env.example` 만 들어 있고, 각자 복사해서 자기 키를 채워 쓰는 방식입니다.
-
-**정말 발급이 안 될 때만** 모든 명령 뒤에 `--fake-llm` 을 붙이세요.
-가짜 LLM 이 대신 답하고 노드 코드는 그대로라 흐름은 따라올 수 있지만,
-실제 모델이 매번 다르게 채점하는 걸 못 보게 됩니다.
 
 ---
 
@@ -89,6 +103,8 @@ uv sync
 | `langgraph — 'uv sync' 를 실행하세요` | `uv sync` 를 안 했거나 레포 폴더 밖에서 실행했습니다 |
 | `GOOGLE_API_KEY 없음` | `.env` 파일이 없습니다. 파일명이 `.env.txt` 로 저장되지 않았는지 확인하세요 |
 | `키가 잘못됐습니다` | 키를 복사할 때 앞뒤 공백이나 따옴표가 딸려 들어갔습니다 |
+| `SLACK_WEBHOOK_URL 없음` | `.env` 의 `# SLACK_WEBHOOK_URL=...` 줄에서 `#` 을 안 지웠거나 주소를 안 넣었습니다. 위 **3. Slack 웹훅 주소 발급** 참고 |
+| `웹훅 주소 형식이 이상합니다` | 주소는 `https://hooks.slack.com/services/` 로 시작해야 합니다. 복사가 잘렸는지 확인하세요 |
 | `호출 한도입니다` | 1분 기다렸다 다시 실행하세요 |
 | 그 외 연결 오류 | 학교·사내망 차단일 수 있습니다. 다른 네트워크에서 시도해 보세요 |
 

@@ -73,6 +73,26 @@ def main():
                 print(f"    {type(e).__name__}: {msg[:120]}")
             fails.append("api call")
 
+    hook = os.getenv("SLACK_WEBHOOK_URL") or os.getenv("DISCORD_WEBHOOK_URL")
+    if not hook:
+        print(f"{NG} SLACK_WEBHOOK_URL 없음")
+        print("    README '3. Slack 웹훅 주소 발급' 을 따라 .env 에 추가하세요")
+        print("    (.env 의 '# SLACK_WEBHOOK_URL=...' 줄에서 # 을 지우고 주소 붙여넣기)")
+        fails.append("slack webhook")
+    elif not hook.startswith(
+        (
+            "https://hooks.slack.com/",
+            "https://discord.com/api/webhooks/",
+            "https://discordapp.com/api/webhooks/",
+        )
+    ):
+        print(f"{NG} 웹훅 주소 형식이 이상합니다")
+        print("    https://hooks.slack.com/services/... 전체를 그대로 붙여넣어야 합니다")
+        fails.append("slack webhook")
+    else:
+        kind = "Discord" if "discord" in hook else "Slack"
+        print(f"{OK} {kind} 웹훅 주소")
+
     print()
     if fails:
         print(f"{NG} {len(fails)}개 항목 실패. 위 안내를 따라 해결한 뒤 다시 실행하세요.")
