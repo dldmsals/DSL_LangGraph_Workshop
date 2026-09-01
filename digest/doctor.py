@@ -41,7 +41,7 @@ def main():
         from digest.graph import build_graph
         from solutions.router import route_after_grade
 
-        build_graph(step=2, route_fn=route_after_grade)
+        build_graph(step=2, route_fn=route_after_grade, solution=True)
         print(f"{OK} 그래프 조립")
     except Exception as e:
         print(f"{NG} 그래프 조립 — {e}")

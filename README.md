@@ -134,7 +134,7 @@ uv run python -m digest.run --step 2     # 루프                      (미션 2
 |---|---|
 | `--offline` | RSS 대신 `data/sample_feed.json` 사용 (네트워크 불안정할 때) |
 | `--fake-llm` | API 키 없이 실행. 노드 코드는 그대로입니다 |
-| `--solution` | 정답 라우터로 실행 (막혔을 때) |
+| `--solution` | 정답 라우터·배선으로 실행 (막혔을 때) |
 | `--topic 반도체` | 주제 변경 |
 
 ## 코드는 다이어그램과 1:1 입니다
@@ -150,7 +150,16 @@ uv run python -m digest.run --step 2     # 루프                      (미션 2
 
 ## 오늘 여러분이 짤 코드
 
-`digest/router.py` 의 함수 하나뿐입니다.
+두 군데입니다. 나머지는 전부 완성 코드로 제공됩니다.
+
+**1. `digest/graph.py` 의 두 줄** (★ 표시된 곳)
+
+```python
+builder.add_conditional_edges(...)      # 갈림길
+builder.add_edge("revise", "grade")     # 뒤로 가는 선 = 사이클
+```
+
+**2. `digest/router.py` 의 함수 하나** — 직접 채우는 빈칸
 
 ```python
 def route_after_grade(state: DigestState) -> str:
@@ -158,7 +167,8 @@ def route_after_grade(state: DigestState) -> str:
     ...
 ```
 
-나머지는 전부 완성 코드로 제공됩니다.
+빈칸인 채로 돌리면 트레이스백 대신 안내 박스가 뜹니다.
+막히면 `--solution` 으로 완성본을 실행해볼 수 있습니다.
 
 ---
 

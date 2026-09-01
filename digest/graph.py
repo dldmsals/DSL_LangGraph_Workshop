@@ -14,7 +14,7 @@ from digest.state import DigestState
 from digest import nodes
 
 
-def build_graph(step: int, route_fn=None):
+def build_graph(step: int, route_fn=None, solution: bool = False):
     builder = StateGraph(DigestState)
 
     # ── 네모 놓기 (add_node) ─────────────────────────────
@@ -43,13 +43,35 @@ def build_graph(step: int, route_fn=None):
 
         else:
             builder.add_node("revise", nodes.revise)
-            builder.add_conditional_edges(
-                "grade",        # 어디서 갈라지나
-                route_fn,       # 어디로 갈지 정하는 함수 (router.py)
-                {"revise": "revise", "publish": "publish"},
-            )
-            builder.add_edge("revise", "grade")   # ★ 뒤로 가는 선 = 사이클
-                                                  #   n8n 이 못 하던 그 한 줄
+
+            if solution:
+                from solutions.wiring import wire_step2
+                wire_step2(builder, route_fn)
+            else:
+                # ── ★ 오늘 따라 칠 두 줄 ──────────────────────────
+                #   ① 갈림길        grade 에서 라우터(route_fn)가 고른 곳으로
+                #                   → add_conditional_edges
+                #   ② 뒤로 가는 선  revise → grade   ★ 사이클!
+                #                   → add_edge
+                #
+                # 막히면 --solution 으로 완성된 배선을 볼 수 있습니다.
+                # ────────────────────────────────────────────────
+                pass
 
     builder.add_edge("publish", END)
+
+    # 두 줄을 입력하기 전에는 grade 에서 길이 끊겨 발송까지 못 갑니다.
+    if step == 2 and not solution:
+        missing = []
+        if "grade" not in builder.branches:
+            missing.append("① 갈림길 (add_conditional_edges)")
+        if ("revise", "grade") not in builder.edges:
+            missing.append('② 뒤로 가는 선 (add_edge("revise", "grade"))')
+        if missing:
+            raise NotImplementedError(
+                "digest/graph.py 의 ★ 표시된 곳이 아직 비어 있습니다:\n"
+                + "".join(f"   · {m}\n" for m in missing)
+                + "   막히면 --solution 을 붙여서 완성된 배선으로 돌려볼 수 있습니다."
+            )
+
     return builder.compile()

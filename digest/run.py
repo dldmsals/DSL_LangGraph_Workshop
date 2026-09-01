@@ -23,7 +23,7 @@ def main():
     p.add_argument("--topic", default="인공지능")
     p.add_argument("--offline", action="store_true", help="RSS 대신 샘플 데이터 사용")
     p.add_argument("--fake-llm", action="store_true", help="API 키 없이 실행")
-    p.add_argument("--solution", action="store_true", help="정답 라우터 사용")
+    p.add_argument("--solution", action="store_true", help="정답 라우터·배선 사용")
     args = p.parse_args()
 
     load_dotenv()
@@ -34,7 +34,13 @@ def main():
     else:
         from digest.router import route_after_grade
 
-    graph = build_graph(step=args.step, route_fn=route_after_grade)
+    try:
+        graph = build_graph(
+            step=args.step, route_fn=route_after_grade, solution=args.solution
+        )
+    except NotImplementedError as e:
+        _box("아직 빈칸이 남아 있습니다", str(e))
+        return
 
     print(f"\n=== STEP {args.step} 그래프 ===")
     print(graph.get_graph().draw_ascii())
