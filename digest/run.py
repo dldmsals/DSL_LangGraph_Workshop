@@ -6,6 +6,7 @@
   uv run python -m digest.run --step 2 --fake-llm   # API 키 없이
   uv run python -m digest.run --step 2 --offline    # 네트워크 없이
   uv run python -m digest.run --step 2 --solution   # 정답 라우터로
+  uv run python -m digest.run --step 2 --slack      # Slack DM 으로 실발송
 """
 import argparse
 
@@ -24,10 +25,11 @@ def main():
     p.add_argument("--offline", action="store_true", help="RSS 대신 샘플 데이터 사용")
     p.add_argument("--fake-llm", action="store_true", help="API 키 없이 실행")
     p.add_argument("--solution", action="store_true", help="정답 라우터·배선 사용")
+    p.add_argument("--slack", action="store_true", help="Slack 웹훅으로 실발송 (없으면 콘솔)")
     args = p.parse_args()
 
     load_dotenv()
-    nodes.setup(get_llm(args.fake_llm), get_grader(args.fake_llm), args.offline)
+    nodes.setup(get_llm(args.fake_llm), get_grader(args.fake_llm), args.offline, args.slack)
 
     if args.solution:
         from solutions.router import route_after_grade

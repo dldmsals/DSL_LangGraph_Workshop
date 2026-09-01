@@ -95,6 +95,8 @@ uv sync
 
    `🎉 All good` 이 나오면 준비 완료입니다.
 
+웹훅은 **`--slack` 을 붙인 실행에서만** 쓰입니다. 평소 연습 실행은 콘솔로만 출력돼요.
+
 > 명령 앞의 **`uv run` 을 빼먹지 마세요.** 그냥 `python` 으로 돌리면
 > 시스템에 깔린 다른 파이썬이 잡혀서 버전 오류가 납니다.
 
@@ -135,6 +137,7 @@ uv run python -m digest.run --step 2     # 루프                      (미션 2
 | `--offline` | RSS 대신 `data/sample_feed.json` 사용 (네트워크 불안정할 때) |
 | `--fake-llm` | API 키 없이 실행. 노드 코드는 그대로입니다 |
 | `--solution` | 정답 라우터·배선으로 실행 (막혔을 때) |
+| `--slack` | Slack DM 으로 실발송. 없으면 항상 콘솔 출력 |
 | `--topic 반도체` | 주제 변경 |
 
 ## 코드는 다이어그램과 1:1 입니다
@@ -211,5 +214,6 @@ LangGraph 의 요점입니다.
   루프 흐름을 보여주기 위한 것이라, 실제 LLM 처럼 매번 결과가 달라지지는 않습니다.
 - `recursion_limit` 을 20 으로 낮춰뒀습니다. `revise` 가 `attempts` 를 올리지 않으면
   무한루프 대신 안내 메시지가 뜹니다.
-- 발송은 `DISCORD_WEBHOOK_URL` 또는 `SLACK_WEBHOOK_URL` 환경변수가 있으면 웹훅으로,
-  없으면 콘솔로 출력합니다.
+- 발송은 기본적으로 콘솔 출력입니다. **`--slack` 을 붙인 실행만** `.env` 의
+  `SLACK_WEBHOOK_URL`(또는 `DISCORD_WEBHOOK_URL`)로 실발송합니다 —
+  연습 실행이 DM 을 어지럽히지 않게요.
