@@ -69,7 +69,7 @@ class FakeGrader:
 
 
 # ── 준비 함수 ────────────────────────────────────────────
-# 세션 당일 모델을 바꾸려면 .env 에 GEMINI_MODEL=... 을 넣으면 됩니다.
+# 모델을 바꾸려면 .env 에 GEMINI_MODEL=... 을 넣으면 됩니다.
 DEFAULT_MODEL = "gemini-3.5-flash-lite"   # 빠르고 무료 한도가 넉넉합니다
 
 

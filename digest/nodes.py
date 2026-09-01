@@ -16,14 +16,15 @@ from digest.state import DigestState, THRESHOLD, MAX_REVISIONS
 _llm = None
 _grader = None
 _offline = False
+_slack = False
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "sample_feed.json"
 
 
-def setup(llm, grader, offline: bool):
+def setup(llm, grader, offline: bool, slack: bool = False):
     """run.py 가 시작할 때 한 번 불러줍니다."""
-    global _llm, _grader, _offline
-    _llm, _grader, _offline = llm, grader, offline
+    global _llm, _grader, _offline, _slack
+    _llm, _grader, _offline, _slack = llm, grader, offline, slack
 
 
 # ── 뉴스 가져오기 ─────────────────────────────────────────
@@ -68,7 +69,6 @@ def summarize(state: DigestState) -> dict:
         return {"summary": "오늘은 관련 기사가 없습니다", "attempts": 0}
 
     body = "\n".join(f"- {a['title']}: {a['summary']}" for a in state["selected"])
-    # 프롬프트가 일부러 허술합니다. 첫 요약이 밋밋해야 루프가 돕니다.
     msg = _llm.invoke(f"다음 기사들을 요약해줘.\n\n{body}")
 
     print("  [summarize] 초안 작성")
@@ -121,11 +121,12 @@ def publish(state: DigestState) -> dict:
     )
 
     url = os.getenv("DISCORD_WEBHOOK_URL") or os.getenv("SLACK_WEBHOOK_URL")
-    if url:
+    if _slack and url:
         payload = {"content": text} if "discord" in url else {"text": text}
         r = requests.post(url, json=payload, timeout=10)
         print(f"  [publish]   웹훅 발송 (HTTP {r.status_code}){badge}")
     else:
-        print(f"  [publish]   콘솔 출력 (웹훅 미설정){badge}")
+        why = "웹훅 미설정" if _slack else "--slack 미지정"
+        print(f"  [publish]   콘솔 출력 ({why}){badge}")
         print("\n" + "─" * 60 + f"\n{text}\n" + "─" * 60)
     return {}
