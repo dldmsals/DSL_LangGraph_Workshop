@@ -11,12 +11,15 @@ from digest.state import DigestState, THRESHOLD, MAX_REVISIONS
 
 def route_after_grade(state: DigestState) -> str:
     """
-    다이어그램의 화살표 3개를 그대로 옮겨 적으세요.
+    다이어그램의 화살표에 붙인 조건 라벨 3개를 그대로 옮겨 적으세요.
 
-        초록 실선   score >= THRESHOLD            →  "publish"
-        빨강 실선   score < THRESHOLD 이고
-                    attempts < MAX_REVISIONS      →  "revise"
-        회색 점선   attempts >= MAX_REVISIONS     →  "publish"
+        점수 ≥ 8                →  "publish"   (합격)
+        점수 < 8 이고 횟수 < 3   →  "revise"    (다시 쓰기)
+        횟수 ≥ 3                →  "publish"   (기회 소진, 그냥 발송)
+
+    그림의 말 → 코드의 이름:
+        점수 = state["score"],    기준 8 = THRESHOLD
+        횟수 = state["attempts"], 기준 3 = MAX_REVISIONS
 
     화살표는 3개인데 목적지는 2개입니다.
     합격이든 재시도 소진이든 결국 발송이고,
