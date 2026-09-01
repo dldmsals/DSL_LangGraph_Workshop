@@ -76,7 +76,7 @@ def main():
     hook = os.getenv("SLACK_WEBHOOK_URL") or os.getenv("DISCORD_WEBHOOK_URL")
     if not hook:
         print(f"{NG} SLACK_WEBHOOK_URL 없음")
-        print("    README '3. Slack 웹훅 주소 발급' 을 따라 .env 에 추가하세요")
+        print("    운영진 공지의 웹훅 주소를 .env 에 넣으세요 (README 3번 참고)")
         print("    (.env 의 '# SLACK_WEBHOOK_URL=...' 줄에서 # 을 지우고 주소 붙여넣기)")
         fails.append("slack webhook")
     elif not hook.startswith(

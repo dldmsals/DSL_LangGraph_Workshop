@@ -67,27 +67,19 @@ uv sync
 가짜 LLM 이 대신 답하고 노드 코드는 그대로라 흐름은 따라올 수 있지만,
 실제 모델이 매번 다르게 채점하는 걸 못 보게 됩니다.
 
-### 3. Slack 웹훅 주소 발급 (필수)
+### 3. Slack 웹훅 주소 설정 (필수)
 
-완성된 다이제스트를 터미널이 아니라 **본인 Slack DM 으로 발송**하기 위한 주소입니다.
+완성된 다이제스트를 터미널이 아니라 **DSL 슬랙 실습 채널로 발송**하기 위한 주소입니다.
+주소는 **운영진이 공지로 나눠드립니다** — 직접 발급할 필요 없습니다.
 
-1. [api.slack.com/apps](https://api.slack.com/apps) 접속 → `Create an App` → **`Blank app`** 선택 → `Continue`
-   (화면이 예전 버전이면 `From scratch` 를 고르면 됩니다. `AI agent` 등 템플릿은 필요 없습니다)
-2. 앱 이름(아무거나)과 워크스페이스(**DSL**)를 고르고 생성
-3. 왼쪽 메뉴 `Incoming Webhooks` → 스위치를 `On` → 맨 아래 `Add New Webhook to Workspace`
-4. 목적지 드롭다운에서 **본인 이름(DM)** 을 고르면 `https://hooks.slack.com/services/...` 주소가 생깁니다
-   — 다이제스트가 각자 자기 DM 으로 옵니다. 채널을 고르지 마세요
-
-   > 드롭다운에 본인 이름이 없다면: Slack 에서 **나와의 DM** 을 한 번 열어
-   > 아무 메시지나 보낸 뒤 이 페이지를 새로고침하세요. 그래도 없으면
-   > **Slackbot** 을 골라도 됩니다 — 마찬가지로 본인에게만 옵니다
-5. `.env` 를 열어 `SLACK_WEBHOOK_URL` 줄의 주석(`#`)을 지우고 본인 주소를 붙여넣습니다
+1. 공지에서 받은 `https://hooks.slack.com/services/...` 주소를 복사합니다
+2. `.env` 를 열어 `SLACK_WEBHOOK_URL` 줄의 주석(`#`)을 지우고 붙여넣습니다
 
    ```
-   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/... 여기에 본인 주소
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/... 공지에서 받은 주소
    ```
 
-6. 마지막으로 전체 점검합니다
+3. 마지막으로 전체 점검합니다
 
    ```bash
    uv run python -m digest.doctor
@@ -111,7 +103,7 @@ uv sync
 | `langgraph — 'uv sync' 를 실행하세요` | `uv sync` 를 안 했거나 레포 폴더 밖에서 실행했습니다 |
 | `GOOGLE_API_KEY 없음` | `.env` 파일이 없습니다. 파일명이 `.env.txt` 로 저장되지 않았는지 확인하세요 |
 | `키가 잘못됐습니다` | 키를 복사할 때 앞뒤 공백이나 따옴표가 딸려 들어갔습니다 |
-| `SLACK_WEBHOOK_URL 없음` | `.env` 의 `# SLACK_WEBHOOK_URL=...` 줄에서 `#` 을 안 지웠거나 주소를 안 넣었습니다. 위 **3. Slack 웹훅 주소 발급** 참고 |
+| `SLACK_WEBHOOK_URL 없음` | `.env` 의 `# SLACK_WEBHOOK_URL=...` 줄에서 `#` 을 안 지웠거나 주소를 안 넣었습니다. 위 **3. Slack 웹훅 주소 설정** 참고 |
 | `웹훅 주소 형식이 이상합니다` | 주소는 `https://hooks.slack.com/services/` 로 시작해야 합니다. 복사가 잘렸는지 확인하세요 |
 | `호출 한도입니다` | 1분 기다렸다 다시 실행하세요 |
 | 그 외 연결 오류 | 학교·사내망 차단일 수 있습니다. 다른 네트워크에서 시도해 보세요 |
@@ -137,7 +129,7 @@ uv run python -m digest.run --step 2     # 루프                      (미션 2
 | `--offline` | RSS 대신 `data/sample_feed.json` 사용 (네트워크 불안정할 때) |
 | `--fake-llm` | API 키 없이 실행. 노드 코드는 그대로입니다 |
 | `--solution` | 정답 라우터·배선으로 실행 (막혔을 때) |
-| `--slack` | Slack DM 으로 실발송. 없으면 항상 콘솔 출력 |
+| `--slack` | 실습 채널로 실발송. 없으면 항상 콘솔 출력 |
 | `--topic 반도체` | 주제 변경 |
 
 ## 코드는 다이어그램과 1:1 입니다
@@ -216,4 +208,4 @@ LangGraph 의 요점입니다.
   무한루프 대신 안내 메시지가 뜹니다.
 - 발송은 기본적으로 콘솔 출력입니다. **`--slack` 을 붙인 실행만** `.env` 의
   `SLACK_WEBHOOK_URL`(또는 `DISCORD_WEBHOOK_URL`)로 실발송합니다 —
-  연습 실행이 DM 을 어지럽히지 않게요.
+  연습 실행이 채널을 어지럽히지 않게요.
