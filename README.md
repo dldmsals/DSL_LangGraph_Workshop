@@ -118,6 +118,13 @@ uv run python -m digest.run --step 1     # 점수 매기기를 끼워 넣은 일
 uv run python -m digest.run --step 2     # 루프                      (미션 2·3)
 ```
 
+위 명령은 전부 결과를 터미널에만 출력합니다. **완성본을 실습 채널로 실제 발송**할 때는
+`--slack` 을 붙이세요 (세션 마지막에 다같이 합니다):
+
+```bash
+uv run python -m digest.run --step 2 --slack     # 루프 완성본 → 실습 채널 발송
+```
+
 | step | 그래프 | 실행하면 |
 |---|---|---|
 | 0 | `수집 → 필터 → 요약 → 발송` | 요약이 잘 나왔는지 **아무도 확인하지 않습니다** |
